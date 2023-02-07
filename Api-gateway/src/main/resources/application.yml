@@ -1,0 +1,43 @@
+server:
+  port: 8080
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+
+spring:
+  application:
+    name: GatewayService
+    zipkin:
+      base-url: http://localhost:9411/
+  cloud:
+    gateway:
+      routes:
+        - id: CustomerService
+          uri: lb://customerService
+          predicates:
+            - Path=/customer/**
+
+
+        - id: BookCommandService
+          uri: lb://CommandService
+          predicates:
+            - Path=/bookcommand/**
+
+        - id: BookQueryService
+          uri: lb://QueryService
+          predicates:
+            - Path=/book/**
+
+        - id: ReviewService
+          uri: lb://reviewService
+          predicates:
+            - Path=/review/**
+
+
+        - id: BorrowingService
+          uri: lb://BookBorrowingService
+          predicates:
+            - Path=/borrowings/**
+
